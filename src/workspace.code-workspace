@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../node_gps_v3"
+		},
+		{
+			"name": "nodeGPS",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
