@@ -13,7 +13,7 @@ const char* ssid = "WiFi_A5CB";
 const char* password = "NEL1QR985QY";
 
 int year , month , date, hour , minute , second;
-String date_str , time_str , lat_str , lng_str;
+String date_str , time_str , lat_str , lng_str, alt_str;
 int pm;
 
 // REFERENCIA DE POSICAO
@@ -77,20 +77,23 @@ void testeJson()
   ESP.wdtDisable();
   int teste = 0;
 
-  while (teste < 20)
+  while (teste < 30)
   {
     Serial.println(teste);
     //Serial.println(gps.location.rawLat().deg);
     Serial.print("LAT=");
-    Serial.println(gps.location.lat(), 6);
+    lat_str = String(gps.location.lat(), 6); 
+    Serial.println(lat_str);
     Serial.print("LONG=");
-    Serial.println(gps.location.lng(), 6);
+    lng_str = String(gps.location.lng(), 6);
+    Serial.println(lng_str);
     Serial.print("ALT=");
-    Serial.println(gps.altitude.meters());
+    alt_str = String(gps.altitude.meters());
+    Serial.println();
     teste++;
     delay(1000);
   }
-  //serializeJson(doc, Serial);
+  serializeJson(doc, Serial);
   Serial.println();
   return;
 }
@@ -100,7 +103,7 @@ void jsonWriter()
   ESP.wdtDisable();
   int numberOfSamples = 0;
 
-  while (numberOfSamples < 20)
+  while (numberOfSamples < 70)
   {
 
     while (ss.available() > 0)
@@ -192,59 +195,59 @@ void jsonWriter()
         //secondsLongitude.add(secondLng);
 
         delay(1000);
-        //} // LOCATION IS UPDATED
-        } // LOCATION IS VALID
-        //} // ENCODE SS READ
-      } // SS AVAILABLE
+        //}                                         // LOCATION IS UPDATED
+        }                                           // LOCATION IS VALID
+        //}                                         // ENCODE SS READ
+      }                                             // SS AVAILABLE
 
-      if (cPL == 1 && cPN == 1)
-      {
-        if (cDL == 1 && cDN == 1)
-        {
-          if (cML == 1 && cMN == 1)
-          {
-            //doc["FX"] = 2;
-            // EVITAR REPETIÇÕES
-            //positionLatitude.clear();
-            //positionLongitude.clear();
-            //degreesLatitude.clear();
-            //degreesLongitude.clear();
-            //minutesLatitude.clear();
-            //minutesLongitude.clear();
-            //// ADICIONAR ÚLTIMO VALOR
-            //positionLatitude.add(posLat);
-            //positionLongitude.add(posLng);
-            //degreesLatitude.add(degreeLat);
-            //degreesLongitude.add(degreeLng);
-            //minutesLatitude.add(minuteLat);
-            //minutesLongitude.add(minuteLng);
-          }
-          else
-          {
-            //doc["FX"] = 1;
-            // EVITAR REPETIÇÕES
-            //positionLatitude.clear();
-            //positionLongitude.clear();
-            //degreesLatitude.clear();
-            //degreesLongitude.clear();
-            // ADICIONAR ÚLTIMO VALOR
-            //positionLatitude.add(posLat);
-            //positionLongitude.add(posLng);
-            //degreesLatitude.add(degreeLat);
-            //degreesLongitude.add(degreeLng);
-          }
-        }
-        else
-        {
-          //doc["FX"] = 0;
-          // EVITAR REPETIÇÕES
-          //positionLatitude.clear();
-          //positionLongitude.clear();
-          // ADICIONAR ÚLTIMO VALOR
-          //positionLatitude.add(posLat);
-          //positionLongitude.add(posLng);
-        }
-      }
+      // if (cPL == 1 && cPN == 1)
+      // {
+      //   if (cDL == 1 && cDN == 1)
+      //   {
+      //     if (cML == 1 && cMN == 1)
+      //     {
+      //       doc["FX"] = 2;
+      //       // EVITAR REPETIÇÕES
+      //       positionLatitude.clear();
+      //       positionLongitude.clear();
+      //       degreesLatitude.clear();
+      //       degreesLongitude.clear();
+      //       minutesLatitude.clear();
+      //       minutesLongitude.clear();
+      //       // ADICIONAR ÚLTIMO VALOR
+      //       positionLatitude.add(posLat);
+      //       positionLongitude.add(posLng);
+      //       degreesLatitude.add(degreeLat);
+      //       degreesLongitude.add(degreeLng);
+      //       minutesLatitude.add(minuteLat);
+      //       minutesLongitude.add(minuteLng);
+      //     }
+      //     else
+      //     {
+      //       doc["FX"] = 1;
+      //       // EVITAR REPETIÇÕES
+      //       positionLatitude.clear();
+      //       positionLongitude.clear();
+      //       degreesLatitude.clear();
+      //       degreesLongitude.clear();
+      //       // ADICIONAR ÚLTIMO VALOR
+      //       positionLatitude.add(posLat);
+      //       positionLongitude.add(posLng);
+      //       degreesLatitude.add(degreeLat);
+      //       degreesLongitude.add(degreeLng);
+      //     }
+      //   }
+      //   else
+      //   {
+      //     doc["FX"] = 0;
+      //     // EVITAR REPETIÇÕES
+      //     positionLatitude.clear();
+      //     positionLongitude.clear();
+      //     // ADICIONAR ÚLTIMO VALOR
+      //     positionLatitude.add(posLat);
+      //     positionLongitude.add(posLng);
+      //   }
+      // }
   }
   //serializeJson(doc, Serial);
   Serial.println();
@@ -296,6 +299,8 @@ void jsonWriter()
   s += "</body> </html> \n";
 
   client.print(s);
+
+  return;
 }
 
 void timeGPS()
@@ -356,6 +361,8 @@ void timeGPS()
     else
       time_str += " AM ";
   }
+
+  return;
 }
 
 void loop()
